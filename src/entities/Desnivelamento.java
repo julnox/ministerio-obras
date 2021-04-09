@@ -1,14 +1,17 @@
 package entities;
 
 import entities.enums.LocalizacaoDesnivel;
+import entities.enums.TipoProblema;
 
-public class Desnivelamento extends Problema{
+public final class Desnivelamento extends Problema{
     private Integer tamanho;
     private LocalizacaoDesnivel localizacao;
+    private TipoProblema tipoProblema = TipoProblema.DESNIVELAMENTO;
 
-    public Desnivelamento(Integer tamanho, LocalizacaoDesnivel localizacao) {
+    public Desnivelamento(String relato, Integer tamanho, int localizacao) {
+        super(relato);
         this.tamanho = tamanho;
-        this.localizacao = localizacao;
+        this.localizacao = LocalizacaoDesnivel.values()[localizacao-1];
     }
 
     public LocalizacaoDesnivel getLocalizacao() {
@@ -29,8 +32,8 @@ public class Desnivelamento extends Problema{
 
     @Override
     public String toString() {
-        return "Desnivelamento{" +
-                "tamanho=" + tamanho +
-                '}';
+        return super.toString() + "\n" +
+                "Tamanho: " + tamanho +
+                ", Localização: " + localizacao.toString();
     }
 }

@@ -1,8 +1,7 @@
 package application;
 
-import entities.Cidadao;
-import entities.Endereco;
-import entities.Reclamacao;
+import entities.*;
+import entities.enums.TipoLista;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,35 +11,39 @@ import java.util.Scanner;
 public class MinisterioObras {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Random random = new Random();
-    private static final HashMap<Integer, Cidadao> cidadaos = new HashMap<>();
-    private static final HashMap<Integer, Reclamacao> reclamacoes = new HashMap<>();
+    private static HashMap<Integer, Cidadao> cidadaos = new HashMap<>();
+    private static HashMap<Integer, Reclamacao> reclamacoes = new HashMap<>();
 
     public static void main(String[] args) {
-        int opcao;
+        int opcao = 0;
 
-        try {
-            do {
+        do {
+            try {
                 switchOpcao(opcao = menu());
-            } while (opcao != 8);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        } finally {
-            scanner.close();
-        }
+            } catch (IllegalArgumentException e) {
+                System.err.println(e.getMessage());
+                scanner.nextLine();
+                scanner.nextLine();
+            }
+        } while (opcao != 10);
+
+        scanner.close();
     }
 
+
     private static int menu() {
-        System.out.println("     <<Secretária de Obras Gama>>");
-        System.out.println("Digite (1) para criar cidadão");
-        System.out.println("Digite (2) para excluir cidadão");
-        System.out.println("Digite (3) para consultar um cidadão");
-        System.out.println("Digite (4) para mostrar todos os cidadãos");
-        System.out.println("Digite (5) para registrar uma reclamação");
-        System.out.println("Digite (6) para excluir uma reclamação");
-        System.out.println("Digite (7) para consultar uma reclamação");
-        System.out.println("Digite (8) para mostrar todas as reclamações");
-        System.out.println("Digite (9) para marcar uma reclamação como resolvido");
-        System.out.println("Digite (10) para sair");
+        System.out.println("|-----------------------MENU---------------------------|");
+        System.out.println("| Digite (1) para criar cidadão                        |");
+        System.out.println("| Digite (2) para excluir cidadão                      |");
+        System.out.println("| Digite (3) para consultar um cidadão                 |");
+        System.out.println("| Digite (4) para mostrar todos os cidadãos            |");
+        System.out.println("| Digite (5) para registrar uma reclamação             |");
+        System.out.println("| Digite (6) para excluir uma reclamação               |");
+        System.out.println("| Digite (7) para consultar uma reclamação             |");
+        System.out.println("| Digite (8) para mostrar todas as reclamações         |");
+        System.out.println("| Digite (9) para marcar uma reclamação como resolvido |");
+        System.out.println("| Digite (10) para sair                                |");
+        System.out.println("|-----------------------MENU---------------------------|");
         System.out.print("Seu input: ");
 
         return scanner.nextInt();
@@ -51,113 +54,214 @@ public class MinisterioObras {
 
         switch (opcao) {
             case 1:
-                System.out.println("----ADICIONAR----");
-                quantidade = quantidadeElementos();
-                for (int i = 1; i <= quantidade; i++){
+                System.out.println("|---------------------ADICIONAR------------------------|");
+                System.out.print("Digite a quantidade de cidadãos: ");
+                quantidade = quantidadeAdicionar();
+                for (int i = 1; i <= quantidade; i++) {
                     System.out.println("CIDADÃO #" + i);
+                    scanner.nextLine();
                     criarCidadao();
                 }
-                System.out.println("----ADICIONAR----");
+                System.out.println("|---------------------ADICIONAR------------------------|");
                 break;
             case 2:
-                System.out.println("----REMOVER----");
-                quantidade = quantidadeElementos();
-                if (quantidade > cidadaos.size()){
-                    throw new IllegalArgumentException("Erro: Quantidade maior que elementos na lista");
-                }
-                for (int i = 1; i<= quantidade; i++){
+                System.out.println("|----------------------REMOVER-------------------------|");
+                System.out.print("Digite a quantidade de cidadãos: ");
+                quantidade = quantidadeRemover(TipoLista.CIDADAO);
+                for (int i = 1; i <= quantidade; i++) {
                     System.out.printf("Digite o ID do cidadão #%d: ", i);
                     cidadaos.remove(scanner.nextInt());
                 }
-                System.out.println("----REMOVER----");
+                System.out.println("|----------------------REMOVER-------------------------|");
                 break;
             case 3:
-                System.out.println("----CONSULTA----");
+                System.out.println("|---------------------CONSULTAR------------------------|");
                 System.out.print("Digite o ID do cidadão: ");
                 System.out.println(cidadaos.get(scanner.nextInt()));
-                System.out.println("----CONSULTA----");
+                System.out.println("|---------------------CONSULTAR------------------------|");
                 break;
             case 4:
-                System.out.println("----CONSULTA----");
-                for (Map.Entry<Integer, Cidadao> e : cidadaos.entrySet()){
-                    System.out.println(e.toString());
+                System.out.println("|---------------------CONSULTAR------------------------|");
+                for (Map.Entry<Integer, Cidadao> e : cidadaos.entrySet()) {
+                    System.out.println(e.getValue().toString() + "\n");
                 }
-                System.out.println("----CONSULTA----");
+                System.out.println("|---------------------CONSULTAR------------------------|");
                 break;
             case 5:
-                System.out.println("----ADICIONAR----");
-                quantidade = quantidadeElementos();
-                for (int i = 1; i <= quantidade; i++){
-
+                System.out.println("|---------------------ADICIONAR------------------------|");
+                System.out.print("Digite a quantidade de reclamações: ");
+                quantidade = quantidadeAdicionar();
+                for (int i = 1; i <= quantidade; i++) {
+                    System.out.println("RECLAMAÇÃO #" + i);
+                    criarReclamacao();
                 }
-
-                System.out.println("----ADICIONAR----");
-
+                System.out.println("|---------------------ADICIONAR------------------------|");
                 break;
             case 6:
+                System.out.println("|----------------------REMOVER-------------------------|");
+                System.out.print("Digite a quantidade de reclamações: ");
+                quantidade = quantidadeRemover(TipoLista.RECLAMACAO);
+                for (int i = 1; i <= quantidade; i++) {
+                    System.out.printf("Digite o ID da reclamação #%d: ", i);
+                    reclamacoes.remove(scanner.nextInt());
+                }
+                System.out.println("|----------------------REMOVER-------------------------|");
                 break;
             case 7:
+                System.out.println("|---------------------CONSULTAR------------------------|");
+                System.out.print("Digite o ID da reclamação: ");
+                System.out.println(reclamacoes.get(scanner.nextInt()));
+                System.out.println("|---------------------CONSULTAR------------------------|");
                 break;
+            case 8:
+                System.out.println("|---------------------CONSULTAR------------------------|");
+                for (Map.Entry<Integer, Reclamacao> e : reclamacoes.entrySet()) {
+                    System.out.println(e.getValue().toString() + "\n");
+                }
+                System.out.println("|---------------------CONSULTAR------------------------|");
+                break;
+            case 9:
+                System.out.println("|---------------------ATUALIZAR------------------------|");
+                System.out.print("Digite o ID da reclamação: ");
+                System.out.println(reclamacoes.get(scanner.nextInt()));
+                System.out.println("|---------------------ATUALIZAR------------------------|");
             default:
                 break;
         }
     }
-    private static void criarCidadao(){
+
+    private static void criarCidadao() {
+        int rua, numero, id;
+        long cepLong;
+        String bairro, cep;
         Cidadao cidadao;
 
-        int id = random.nextInt();
-
-        System.out.println("ID DO CIDADÃO: " + id);
         System.out.print("Digite um nome: ");
         String nome = scanner.nextLine();
-        System.out.print("Digite o CPF: ");
-        long cpfLong = scanner.nextLong();
-        String cpf = Long.toString(cpfLong);
 
-        if (cpf.length() != 11){
-            throw new IllegalArgumentException("CPF deve ser 11 dígitos");
+        id = random.nextInt(1500);
+        while(checarId(TipoLista.CIDADAO, id)){
+            id = random.nextInt(1500);
         }
-        cidadao = new Cidadao(nome, cpf);
 
-        System.out.println("Digite a rua da residência: ");
-        int rua = scanner.nextInt();
-        System.out.println("Digite o número da residência: ");
-        int numero = scanner.nextInt();
-        System.out.println("Digite o bairro da residência: ");
-        String bairro = scanner.nextLine();
-        System.out.println("Digite o cep da residência: ");
-        long cepLong = scanner.nextLong();
-        String cep = Long.toString(cepLong);
+        cidadao = new Cidadao(id, nome);
+
+        System.out.print("Digite a rua da residência: ");
+        rua = scanner.nextInt();
+        System.out.print("Digite o número da residência: ");
+        numero = scanner.nextInt();
+        System.out.print("Digite o bairro da residência: ");
+        scanner.nextLine();
+        bairro = scanner.nextLine();
+        System.out.print("Digite o cep da residência: ");
+        cepLong = scanner.nextLong();
+        cep = Long.toString(cepLong);
 
         cidadao.setEndereco(new Endereco(rua, numero, bairro, cep));
 
-        cidadaos.put(id, cidadao);
-    }
-    private static void criarReclamacao(){
-        Reclamacao reclamacao;
-        int id = random.nextInt();
+        System.out.println("ID DO CIDADÃO: " + cidadao.getId());
 
-        System.out.println("ID DA RECLAMAÇÃO: " + id);
-        System.out.println("Digite o ID do cidadão autor da reclamação: ");
-        int idCidadao = scanner.nextInt();
-        if (cidadaos.get(idCidadao) == null){
+        cidadaos.put(cidadao.getId(), cidadao);
+    }
+
+    private static void criarReclamacao() {
+        int quantProblema, idCidadao, id;
+        Reclamacao reclamacao;
+
+        System.out.print("Digite o ID do cidadão autor da reclamação: ");
+        idCidadao = scanner.nextInt();
+        if (cidadaos.get(idCidadao) == null) {
             throw new IllegalArgumentException("ID de cidadão invalido");
         }
-        quantidadeElementos();
-    }
-    private static void criarProblema(){
 
+        id = random.nextInt(1500);
+        while(checarId(TipoLista.RECLAMACAO, id)){
+            id = random.nextInt(1500);
+        }
+
+        reclamacao = new Reclamacao(id, cidadaos.get(idCidadao));
+
+        System.out.print("Digite a quantidade de problemas: ");
+        quantProblema = quantidadeAdicionar();
+        for (int i = 1; i <= quantProblema; i++) {
+            System.out.println("PROBLEMA #" + i);
+            reclamacao.addProblema(criarProblema());
+        }
+
+        System.out.println("ID DA RECLAMAÇÃO: " + reclamacao.getId());
+        reclamacoes.put(reclamacao.getId(), reclamacao);
     }
-    private static int quantidadeElementos(){
+
+    private static Problema criarProblema() {
+        char tipoProblema;
+
+        System.out.print("O pr1oblema é um desnivelamento na via? (s/n) ");
+        tipoProblema = scanner.next().toLowerCase().charAt(0);
+        System.out.print("Detalhe o problema: ");
+        scanner.nextLine();
+        String relato = scanner.nextLine();
+
+        if (tipoProblema == 's') {
+            int tamanho, localizacao;
+
+            System.out.print("Digite o tamanho do desnivelamento em uma escala de 0 a 10: ");
+            tamanho = scanner.nextInt();
+            if (tamanho < 0 || tamanho > 10) {
+                throw new IllegalArgumentException("Tamanho do desnivelamento invalido");
+            }
+
+            System.out.println("Localização: ");
+            System.out.println("Digite (1) para rua");
+            System.out.println("Digite (2) para calçada");
+            System.out.print("Digite a localização: ");
+            localizacao = scanner.nextInt();
+            if (localizacao > 2 || localizacao < 1) {
+                throw new IllegalArgumentException("Localização Invalida");
+            }
+
+            return new Desnivelamento(relato, tamanho, localizacao);
+
+        } else {
+            return new Problema(relato);
+        }
+    }
+
+    private static int quantidadeAdicionar() {
         int quantidade;
 
-        System.out.print("Digite a quantidade: ");
         quantidade = scanner.nextInt();
 
-        if (quantidade <= 0){
+        if (quantidade <= 0) {
             throw new IllegalArgumentException("Quantidade invalida");
         }
 
         return quantidade;
+    }
+
+    private static int quantidadeRemover(TipoLista tipoLista) {
+        int quantidade;
+
+        quantidade = scanner.nextInt();
+
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("Quantidade invalida");
+        } else if (tipoLista == TipoLista.valueOf("CIDADAO")) {
+            if (quantidade > cidadaos.size()) {
+                throw new IllegalArgumentException("Quantidade maior que lista de cidadãos");
+            }
+        } else if (tipoLista == TipoLista.valueOf("RECLAMACAO")) {
+            if (quantidade > reclamacoes.size()) {
+                throw new IllegalArgumentException("Quantidade maior que lista de reclamações");
+            }
+        }
+        return quantidade;
+    }
+
+    private static boolean checarId(TipoLista tipoLista, int id){
+        if (tipoLista == TipoLista.RECLAMACAO){
+            return reclamacoes.get(id) != null;
+        } else{
+            return cidadaos.get(id) != null;
+        }
     }
 }

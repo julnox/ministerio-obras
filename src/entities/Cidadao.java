@@ -1,19 +1,22 @@
 package entities;
 
+import java.util.Random;
+
 public class Cidadao {
     private int id;
     private String nome;
-    private String cpf;
     private Endereco endereco;
 
-    public Cidadao(String nome, String cpf) {
-        this.nome = nome;
-        this.cpf = cpf;
+    public Cidadao() {
     }
 
-    public Cidadao(String nome, String cpf, Endereco endereco) {
+    public Cidadao(int id, String nome) {
         this.nome = nome;
-        this.cpf = cpf;
+        this.id = id;
+    }
+
+    public Cidadao(String nome, Endereco endereco) {
+        this.nome = nome;
         this.endereco = endereco;
     }
 
@@ -29,10 +32,6 @@ public class Cidadao {
         return id;
     }
 
-    public String getCpf() {
-        return cpf;
-    }
-
     public Endereco getEndereco() {
         return endereco;
     }
@@ -43,10 +42,8 @@ public class Cidadao {
 
     @Override
     public String toString() {
-        return "Cidadao{" + "nome='" + nome + '\'' +
-                ", id=" + id +
-                ", cpf='" + cpf + '\'' +
-                ", endereco=" + endereco +
-                '}';
+        return "ID: " + id +
+                "\nNome: " + nome +
+                "\nENDEREÇO= " + endereco;
     }
 }
