@@ -14,19 +14,15 @@ public class Reclamacao {
     private Situacao situacao;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
 
-    public Reclamacao(Date data, Cidadao cidadao, Situacao situacao) {
-        this.data = data;
+    public Reclamacao(Cidadao cidadao) {
         this.cidadao = cidadao;
-        this.situacao = situacao;
+        situacao = Situacao.REGISTRADO;
         problemas = new ArrayList<>();
+        data = new Date();
     }
 
     public Date getData() {
         return data;
-    }
-
-    public void setData(Date data) {
-        this.data = data;
     }
 
     public Cidadao getCidadao() {

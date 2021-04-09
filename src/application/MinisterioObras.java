@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-public class CriarReclamacao {
+public class MinisterioObras {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Random random = new Random();
     private static final HashMap<Integer, Cidadao> cidadaos = new HashMap<>();
@@ -23,7 +23,7 @@ public class CriarReclamacao {
                 switchOpcao(opcao = menu());
             } while (opcao != 8);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         } finally {
             scanner.close();
         }
@@ -52,7 +52,7 @@ public class CriarReclamacao {
         switch (opcao) {
             case 1:
                 System.out.println("----ADICIONAR----");
-                quantidade = quantidadeCidadao();
+                quantidade = quantidadeElementos();
                 for (int i = 1; i <= quantidade; i++){
                     System.out.println("CIDADÃO #" + i);
                     criarCidadao();
@@ -61,7 +61,10 @@ public class CriarReclamacao {
                 break;
             case 2:
                 System.out.println("----REMOVER----");
-                quantidade = quantidadeCidadao();
+                quantidade = quantidadeElementos();
+                if (quantidade > cidadaos.size()){
+                    throw new IllegalArgumentException("Erro: Quantidade maior que elementos na lista");
+                }
                 for (int i = 1; i<= quantidade; i++){
                     System.out.printf("Digite o ID do cidadão #%d: ", i);
                     cidadaos.remove(scanner.nextInt());
@@ -82,7 +85,14 @@ public class CriarReclamacao {
                 System.out.println("----CONSULTA----");
                 break;
             case 5:
-                
+                System.out.println("----ADICIONAR----");
+                quantidade = quantidadeElementos();
+                for (int i = 1; i <= quantidade; i++){
+
+                }
+
+                System.out.println("----ADICIONAR----");
+
                 break;
             case 6:
                 break;
@@ -93,7 +103,6 @@ public class CriarReclamacao {
         }
     }
     private static void criarCidadao(){
-
         Cidadao cidadao;
 
         int id = random.nextInt();
@@ -124,17 +133,29 @@ public class CriarReclamacao {
 
         cidadaos.put(id, cidadao);
     }
-    private static int quantidadeCidadao (){
+    private static void criarReclamacao(){
+        Reclamacao reclamacao;
+        int id = random.nextInt();
+
+        System.out.println("ID DA RECLAMAÇÃO: " + id);
+        System.out.println("Digite o ID do cidadão autor da reclamação: ");
+        int idCidadao = scanner.nextInt();
+        if (cidadaos.get(idCidadao) == null){
+            throw new IllegalArgumentException("ID de cidadão invalido");
+        }
+        quantidadeElementos();
+    }
+    private static void criarProblema(){
+
+    }
+    private static int quantidadeElementos(){
         int quantidade;
 
-        System.out.print("Digite a quantidade de cidadãos: ");
+        System.out.print("Digite a quantidade: ");
         quantidade = scanner.nextInt();
 
         if (quantidade <= 0){
             throw new IllegalArgumentException("Quantidade invalida");
-        }
-        else if (quantidade > cidadaos.size()){
-            throw new IllegalArgumentException("Quantidade maior que elementos na lista");
         }
 
         return quantidade;
