@@ -4,10 +4,11 @@ import entities.enums.TipoProblema;
 
 public class Problema {
     private String relato;
-    private TipoProblema tipoProblema = TipoProblema.GERAL;
+    protected TipoProblema tipoProblema;
 
     public Problema(String relato) {
         this.relato = relato;
+        setTipoProblema();
     }
 
     public String getRelato() {
@@ -16,6 +17,10 @@ public class Problema {
 
     public void setRelato(String relato) {
         this.relato = relato;
+    }
+
+    protected void setTipoProblema (){
+        tipoProblema = TipoProblema.GERAL;
     }
 
     @Override
