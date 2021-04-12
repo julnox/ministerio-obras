@@ -3,23 +3,21 @@ package entities;
 import entities.enums.Situacao;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 
 public final class Reclamacao {
     private int id;
     private Date data;
     private Cidadao cidadao;
-    private ArrayList<Problema> problemas;
+    private Problema problema;
     private Situacao situacao;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
 
-    public Reclamacao(int id, Cidadao cidadao) {
+    public Reclamacao(int id, Cidadao cidadao, Problema problema) {
         this.cidadao = cidadao;
-        situacao = Situacao.REGISTRADO;
         this.id = id;
-        problemas = new ArrayList<>();
+        this.problema = problema;
+        situacao = Situacao.REGISTRADO;
         data = new Date();
     }
 
@@ -35,21 +33,12 @@ public final class Reclamacao {
         return cidadao;
     }
 
-    public void addProblema(Problema problema){
-        problemas.add(problema);
+    public Problema getProblema() {
+        return problema;
     }
 
-    public void removeProblema(Problema problema){
-        problemas.remove(problema);
-    }
-
-    public String getProblemas(){
-        StringBuilder sb = new StringBuilder();
-
-        for (Problema p : problemas){
-            sb.append(p.toString());
-        }
-        return sb.toString();
+    public void setProblema(Problema problema) {
+        this.problema = problema;
     }
 
     public void setCidadao(Cidadao cidadao) {
@@ -70,6 +59,6 @@ public final class Reclamacao {
                 "\nData: " + sdf.format(data) +
                 "\nCidadão= ID: " + cidadao.getId() + ", Nome: " + cidadao.getNome() +
                 "\nSituação: " + situacao +
-                "\nPROBLEMAS\n" + getProblemas();
+                "\nPROBLEMA\n" + problema;
     }
 }
