@@ -1,6 +1,7 @@
 package application;
 
 import entities.*;
+import entities.enums.Situacao;
 import entities.enums.TipoLista;
 
 import java.util.HashMap;
@@ -123,7 +124,7 @@ public class MinisterioObras {
             case 9:
                 System.out.println("|---------------------ATUALIZAR------------------------|");
                 System.out.print("Digite o ID da reclamação: ");
-                System.out.println(reclamacoes.get(scanner.nextInt()));
+                reclamacoes.get(scanner.nextInt()).setSituacao(Situacao.RESOLVIDO);
                 System.out.println("|---------------------ATUALIZAR------------------------|");
             default:
                 break;
