@@ -175,18 +175,12 @@ public class MinisterioObras {
         }
 
         id = random.nextInt(1500);
-        while(checarId(TipoLista.RECLAMACAO, id)){
+        while(checarId(TipoLista.RECLAMACAO, id)) {
             id = random.nextInt(1500);
         }
+        Problema problema = criarProblema();
 
-        reclamacao = new Reclamacao(id, cidadaos.get(idCidadao));
-
-        System.out.print("Digite a quantidade de problemas: ");
-        quantProblema = quantidadeAdicionar();
-        for (int i = 1; i <= quantProblema; i++) {
-            System.out.println("PROBLEMA #" + i);
-            reclamacao.addProblema(criarProblema());
-        }
+        reclamacao = new Reclamacao(id, cidadaos.get(idCidadao), problema);
 
         System.out.println("ID DA RECLAMAÇÃO: " + reclamacao.getId());
         reclamacoes.put(reclamacao.getId(), reclamacao);
@@ -195,7 +189,7 @@ public class MinisterioObras {
     private static Problema criarProblema() {
         char tipoProblema;
 
-        System.out.print("O pr1oblema é um desnivelamento na via? (s/n) ");
+        System.out.print("O problema é um buraco na via? (s/n) ");
         tipoProblema = scanner.next().toLowerCase().charAt(0);
         System.out.print("Detalhe o problema: ");
         scanner.nextLine();
@@ -204,10 +198,10 @@ public class MinisterioObras {
         if (tipoProblema == 's') {
             int tamanho, localizacao;
 
-            System.out.print("Digite o tamanho do desnivelamento em uma escala de 0 a 10: ");
+            System.out.print("Digite o tamanho do buraco em uma escala de 0 a 10: ");
             tamanho = scanner.nextInt();
             if (tamanho < 0 || tamanho > 10) {
-                throw new IllegalArgumentException("Tamanho do desnivelamento invalido");
+                throw new IllegalArgumentException("Tamanho invalido");
             }
 
             System.out.println("Localização: ");
@@ -219,7 +213,7 @@ public class MinisterioObras {
                 throw new IllegalArgumentException("Localização Invalida");
             }
 
-            return new Desnivelamento(relato, tamanho, localizacao);
+            return new Buraco(relato, tamanho, localizacao);
 
         } else {
             return new Problema(relato);
