@@ -1,5 +1,6 @@
 # ministerio-obras
- Projeto para a matéria de POO, feito por:
- Júlio César
- Marcus Vinicius Cunha
+Projeto feito para a matéria de POO ministrado por Wilton.
+## Créditos:
+ Júlio César <br>
+ Marcus Vinicius Cunha <br>
  João Vitor Pereira
