@@ -1,7 +1,5 @@
 package entities;
 
-import java.util.Random;
-
 public class Cidadao {
     private int id;
     private String nome;
